@@ -1,0 +1,51 @@
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header {
+    height: 80px;
+    background: #2c3e50;
+    color: white;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  #mapView {
+    flex: 1;
+    width: 100%;
+  }
+  
+  .basemap-gallery {
+    height: 60px;
+    background: #f8f9fa;
+    display: flex;
+    gap: 15px;
+    padding: 10px 20px;
+    align-items: center;
+    border-top: 1px solid #dee2e6;
+  }
+  
+  .basemap-gallery button {
+    padding: 8px 20px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+  }
+  
+  .basemap-gallery button:hover {
+    background: #357abd;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  }
