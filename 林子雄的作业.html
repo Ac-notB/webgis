@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GeoScene 地图作业</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>我的 GeoScene 专题地图</h1>
+    <div id="searchWidget"></div>
+  </header>
+
+  <div id="mapView"></div>
+
+  <div class="basemap-gallery">
+    <button onclick="changeBasemap('streets')">街道图</button>
+    <button onclick="changeBasemap('satellite')">卫星图</button>
+    <button onclick="changeBasemap('topo')">地形图</button>
+    <button onclick="changeBasemap('gray')">灰度图</button>
+  </div>
+
+  <script src="https://js.arcgis.com/4.32/"></script>
+  <script>
+    let view; // 全局声明视图对象
+
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/FeatureLayer",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Legend",
+      "esri/widgets/Search",
+      "esri/widgets/LayerList"
+    ], (Map, MapView, FeatureLayer, ScaleBar, Legend, Search, LayerList) => {
+
+      // ==================== 在这里替换你的图层URL ====================
+      const customLayer = new FeatureLayer({
+        url: "https://www.geosceneonline.cn/server/rest/services/中国台风和地震lzx/MapServer",  // 替换为你的GeoScene图层URL
+        title: "我的专题图层",       // 自定义图层名称
+        popupEnabled: true          // 启用弹出窗口
+      });
+      // =============================================================
+
+      const map = new Map({
+        basemap: "streets",
+        layers: [customLayer]  // 添加自定义图层
+      });
+
+      view = new MapView({
+        container: "mapView",
+        map: map,
+        center: [116.4074, 39.9042], // 初始中心坐标（北京）
+        zoom: 10
+      });
+
+      // 添加比例尺
+      view.ui.add(new ScaleBar({
+        view: view,
+        unit: "metric"
+      }), "bottom-left");
+
+      // 添加图例
+      view.ui.add(new Legend({
+        view: view,
+        style: "card"
+      }), "bottom-right");
+
+      // 添加搜索框
+      view.ui.add(new Search({
+        view: view,
+        popupEnabled: false
+      }), "top-right");
+
+      // 添加图层列表
+      view.ui.add(new LayerList({
+        view: view,
+        listItemCreatedFunction: (event) => {
+          const item = event.item;
+          if (item.layer.type === "base") {
+            item.visible = false; // 隐藏底图选项
+          }
+        }
+      }), "top-left");
+    });
+
+    // 底图切换函数
+    function changeBasemap(name) {
+      if (view) {
+        view.map.basemap = name;
+      }
+    }
+  </script>
+</body>
+</html>
